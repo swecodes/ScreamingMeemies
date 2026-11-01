@@ -7,7 +7,9 @@ from pydantic_ai import Agent, RunContext
 
 from ghosts import GhostSheet, Role
 from house import House
-
+from pydantic_ai import Agent, ModelRetry, RunContext  
+from checker import find_leak, report_leak
+from ghosts import GhostSheet, GuiltyRole, Role        
 load_dotenv()
 
 MODEL = "groq:qwen/qwen3.8-27b"
@@ -112,3 +114,18 @@ def reveal_clue(ctx: RunContext[GhostDeps]) -> str:
         return "You already gave this clue. Don't repeat it; tease the visitor instead."
     ctx.deps.notebook.append(clue)
     return f"Clue added to the visitor's notebook: {clue}"
+
+@ghost_agent.output_validator
+def no_leaks(ctx: RunContext[GhostDeps], output: GhostReply) -> GhostReply:
+    role = ctx.deps.role
+    if not isinstance(role, GuiltyRole):
+        return output
+    shown_text = f"{output.reply} {output.haunting or ''}"
+    leaked = find_leak(shown_text, role.hiding_place)
+    if leaked:
+        report_leak(ctx.deps.sheet.name, leaked, shown_text)
+        raise ModelRetry(
+            f"You mentioned '{leaked}', which gives away where you hid the dentures. "
+            "Rewrite your reply without mentioning it. Stay in character."
+        )
+    return output
