@@ -23,5 +23,7 @@
     "lie": "You never go near Grandma's room.",
     "goal": "Protect your diary habit; happily point fingers at others."
   },
-  "clue": "I saw {culprit} tiptoeing toward {place} at 3 AM, looking VERY guilty."
+  "clue": "I saw {culprit} tiptoeing toward {place} at 3 AM, looking VERY guilty.",
+  "farewell": "Finally, some peace. Now wipe your feet on the way OUT.",
+  "outrage": "ME?! I have mopped this house for a CENTURY and this is the thanks I get?"
 }
