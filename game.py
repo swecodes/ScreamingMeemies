@@ -2,7 +2,7 @@ import asyncio
 import os
 import random
 import uuid
-
+from observability import init_sentry
 from pydantic_ai.exceptions import ModelHTTPError, UnexpectedModelBehavior
 
 from ghost_agent import GhostDeps, ghost_agent  
@@ -31,6 +31,7 @@ def pick_culprit(ghosts: dict[str, GhostSheet], last: str | None) -> str:
 
 
 async def main() -> None:
+    init_sentry()
     if not os.getenv("GROQ_API_KEY"):
         raise SystemExit("GROQ_API_KEY is missing. Check your .env file.")
 
