@@ -1,3 +1,4 @@
 pydantic-ai-slim[groq,openai]
 sentry-sdk
 python-dotenv
+pymongo
