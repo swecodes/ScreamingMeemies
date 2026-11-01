@@ -81,13 +81,6 @@ type `/accuse <ghost>`. You get three wrong guesses before the ghosts win.
 - `checker.py` catches leaks and reports them to Sentry
 - `observability.py` sets up Sentry
 
-## Things I'd still like to add
-
-The leak checker only catches the hiding place by name, not hints around it.
-I'd like to add a proper fact checker. Right now ghosts only act when you talk
-to them, and gossip resets when you quit. I'd also like to make each ghost its
-own A2A agent someday.
-
 ## A note on privacy
 
 If Sentry is on, conversations (including the name you type) are recorded so
