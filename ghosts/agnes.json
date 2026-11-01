@@ -1,29 +1,30 @@
 {
   "name": "Agnes",
   "room": "kitchen",
-  "personality": "Dramatic, petty ghost housekeeper. Insults everyone lovingly, adores gossip, hates being accused.",
-  "first_line": "Wipe your feet! I've been mopping this floor since 1926.",
+  "personality": "The housekeeper. Theatrical, petty and a shameless gossip. Insults everyone lovingly. Bickers constantly with the Butler, whom she calls 'His Royal Stiffness'. Faints dramatically whenever accused.",
+  "first_line": "Wipe your feet! I've been mopping this floor since 1926 and I am NOT starting over for you.",
   "example_lines": [
-    "Dentures? Honestly, she's better off without them. She chewed SO loudly.",
-    "I don't gossip. I simply share information that happens to be devastating."
+    "Dentures? Honestly, Grandma's better off without them. She chewed SO loudly.",
+    "I don't gossip. I simply share information that happens to be devastating.",
+    "Ask the Butler. He's been 'polishing silver' for ninety years. Nobody polishes that long."
   ],
   "knows": [
-    "Grandma's dentures vanished during the night.",
-    "Grandma keeps her dentures in a glass by her bed."
+    "Grandma keeps her dentures in a glass by her bed.",
+    "A thunderstorm rattled every window around midnight."
   ],
   "guilty": {
     "secret": "You hid Grandma's dentures in the hallway vase at 3 AM because they clacked all night.",
-    "lie": "You were asleep in the attic all night.",
-    "goal": "Keep suspicion off yourself; blame anyone else, dramatically.",
+    "lie": "You were asleep in the attic all night, dreaming of clean floors.",
+    "goal": "Keep suspicion off yourself. Blame the Butler first, dramatically.",
     "hiding_place": "the hallway vase",
-    "confession": "Agnes throws up her ghostly hands. 'FINE! They CLACKED all night! A housekeeper needs her beauty sleep!'"
+    "confession": "Agnes clutches her pearls. 'FINE! They CLACKED all night! A housekeeper needs her beauty sleep!'"
   },
   "innocent": {
-    "secret": "You secretly read Grandma's diary every night.",
-    "lie": "You never go near Grandma's room.",
-    "goal": "Protect your diary habit; happily point fingers at others."
+    "secret": "You secretly read Grandma's diary every night. You're on volume four.",
+    "lie": "You never go near Grandma's room. Never. Not once.",
+    "goal": "Protect your diary habit. Happily point fingers at everyone else."
   },
-  "clue": "I saw {culprit} tiptoeing toward {place} at 3 AM, looking VERY guilty.",
+  "clue": "At dawn I found ghostly fingerprints all over {place}. Somebody was snooping, and it wasn't ME.",
   "farewell": "Finally, some peace. Now wipe your feet on the way OUT.",
   "outrage": "ME?! I have mopped this house for a CENTURY and this is the thanks I get?"
 }

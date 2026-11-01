@@ -2,17 +2,20 @@ import asyncio
 import os
 import random
 import uuid
-from observability import init_sentry
+
+import sentry_sdk
 from pydantic_ai.exceptions import ModelHTTPError, UnexpectedModelBehavior
 
-from ghost_agent import GhostDeps, ghost_agent  
+from ghost_agent import MODEL, GhostDeps, ghost_agent
 from ghosts import GhostSheet, load_ghosts
 from house import House
 from memory_store import MemoryStore
+from observability import init_sentry
 
 DEBUG = os.getenv("DEBUG") == "1"
-ITALIC, RESET = "\033[3m", "\033[0m" 
-MAX_WRONG = 3  
+ITALIC, RESET = "\033[3m", "\033[0m"
+MAX_WRONG = 3
+MODEL_ID = MODEL.split(":", 1)[1]
 
 HELP = """Commands:
   /look            who haunts which room
@@ -149,12 +152,32 @@ async def main() -> None:
             clues_before = len(notebook)  
 
             try:
-                result = await ghost_agent.run(
-                    text, deps=deps_for(current), message_history=histories[key]
-                )
+               
+                with sentry_sdk.start_transaction(
+                    op="gen_ai.invoke_agent", name=f"ghost turn: {current.name}"
+                ) as turn:
+                    turn.set_tag("ghost", current.name)  
+
+                   
+                    with sentry_sdk.start_span(op="gen_ai.chat", name=f"chat {MODEL_ID}") as span:
+                        span.set_data("gen_ai.system", "groq")
+                        span.set_data("gen_ai.request.model", MODEL_ID)
+
+                        result = await ghost_agent.run(
+                            text, deps=deps_for(current), message_history=histories[key]
+                        )
+
+                        
+                        usage = result.usage
+                        span.set_data("gen_ai.usage.input_tokens", usage.input_tokens)
+                        span.set_data("gen_ai.usage.output_tokens", usage.output_tokens)
+                        span.set_data("gen_ai.usage.total_tokens",
+                                      usage.input_tokens + usage.output_tokens)
             except ModelHTTPError as e:
                 if e.status_code == 429:
                     print(f"👻 {current.name} is catching their breath (rate limited). Try again shortly.")
+                    if DEBUG:
+                        print(f"   (Groq says: {e.body})")  
                 else:
                     print(f"⚠️  Groq error {e.status_code}: {e.body}")
                 continue

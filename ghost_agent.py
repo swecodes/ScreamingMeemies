@@ -4,7 +4,6 @@ from typing import Literal
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext
-
 from ghosts import GhostSheet, Role
 from house import House
 from pydantic_ai import Agent, ModelRetry, RunContext  
@@ -38,7 +37,13 @@ class GhostDeps:
     house: House       
     notebook: list[str] 
     player: str          
-ghost_agent = Agent(MODEL, deps_type=GhostDeps, output_type=GhostReply, defer_model_check=True)
+ghost_agent = Agent(
+    MODEL,
+    deps_type=GhostDeps,
+    output_type=GhostReply,
+    defer_model_check=True,
+    model_settings={"max_tokens": 300},
+)
 
 @ghost_agent.instructions
 def ghost_instructions(ctx: RunContext[GhostDeps]) -> str:
